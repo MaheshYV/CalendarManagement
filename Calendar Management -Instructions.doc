@@ -1,0 +1,93 @@
+
+
+Calendar Management Instructions
+
+Create Calendar Event
+
+ 
+
+
+ 
+
+
+ 
+
+Create Calendar Event JSON request
+
+{        	"calendarId": 2,
+		"title": "Sprint Team",
+		"eventDate": "2018-06-10",
+		"eventTime": "11:30",
+		"location": "Atlanta",
+		"attendeeList": [
+			"Robert",
+			"Cary",
+			"Amanda"
+		],
+		"reminderTime": "10"
+}
+
+
+curl -X POST -H 'Content-Type: application/json' -i http://localhost:8081/calendar/events/create --data '{
+
+		"calendarId": 1
+		"title": "Team ",
+		"eventDate": "2018-06-10",
+		"eventTime": "10:30",
+		"location": "Atlanta",
+		"attendeeList": [
+			"Robert",
+			"Cary",
+			"Amanda"
+		],
+		"reminderTime": "10"
+
+}'
+
+
+Get Calendar Event
+
+ 
+
+ 
+ 
+
+curl -X GET -i http://localhost:8081/calendar/events
+
+
+Update Calendar Event
+
+Delete Calendar Event
+
+ 
+
+Get calendar event by day/date
+
+
+ 
+
+ 
+
+
+curl -X GET -i http://localhost:8081/calendar/events/day/2018-06-20
+
+Get Calendar Events by Week
+
+ 
+
+ 
+
+
+curl -X GET -i http://localhost:8081/calendar/events/week/2018-06-11/2018-06-16
+
+Get calendar events by month
+
+ 
+
+ 
+
+ 
+
+curl -X GET -i http://localhost:8081/calendar/events/month/2018/06
+
+

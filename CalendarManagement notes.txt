@@ -1,0 +1,34 @@
+POST http://localhost:8081/calendar/events/create
+
+
+{
+
+		"calendarId": 2,
+		"title": "Team ",
+		"eventDate": "2018-06-10",
+		"eventTime": "10:30",
+		"location": "Atlanta",
+		"attendeeList": [
+			"Robert",
+			"Cary",
+			"Amanda"
+		],
+		"reminderTime": "10"
+
+}
+
+curl -X POST -H 'Content-Type: application/json' -i http://localhost:8081/calendar/events/create --data '{
+
+		"calendarId": 2,
+		"title": "Team ",
+		"eventDate": "2018-06-10",
+		"eventTime": "10:30",
+		"location": "Atlanta",
+		"attendeeList": [
+			"Robert",
+			"Cary",
+			"Amanda"
+		],
+		"reminderTime": "10"
+
+}'
