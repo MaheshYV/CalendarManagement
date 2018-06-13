@@ -120,4 +120,12 @@ public class CalendarEvent {
 	public void setCalendar(Calendar calendar) {
 		this.calendar = calendar;
 	}
+
+	@Override
+	public String toString() {
+		return "CalendarEvent [id=" + id + ", title=" + title + ", eventDate=" + eventDate + ", eventTime=" + eventTime
+				+ ", location=" + location + ", attendeeList=" + attendeeList + ", reminderTime=" + reminderTime
+				+ ", blnReminderSent=" + blnReminderSent + ", calendar=" + calendar + "]";
+	} // end toString method
+	
 } // end CalendarEvent class

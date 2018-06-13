@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
@@ -32,6 +34,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 @RestController
 @RequestMapping("/calendar/events")
 public class CalendarEventController {
+	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
 	private CalendarEventService calendarEventService;
@@ -57,8 +61,8 @@ public class CalendarEventController {
 			@PathVariable(name = "eventDate", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate eventDate)
 			throws CalendarEventException {
 
-		System.out.println("[CalendarEventController:getDayEvents] Start of the method");
-		System.out.println("[CalendarEventController:getDayEvents] eventDate = " + eventDate);
+		logger.info("[CalendarEventController:getDayEvents] Start of the method");
+		logger.info("[CalendarEventController:getDayEvents] eventDate = " + eventDate);
 
 		ResponseEntity<?> responseEntity = null;
 
@@ -76,7 +80,7 @@ public class CalendarEventController {
 			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		System.out.println("[CalendarEventController:getDayEvents] End of the method");
+		logger.info("[CalendarEventController:getDayEvents] End of the method");
 
 		return responseEntity;
 	}
@@ -91,9 +95,9 @@ public class CalendarEventController {
 	public ResponseEntity<?> getMonthEvents(@PathVariable(name = "year", required = true) Integer year,
 			@PathVariable(name = "month", required = true) Integer month) throws CalendarEventException {
 
-		System.out.println("[CalendarEventController:getMonthEventss] Start of the method");
-		System.out.println("[CalendarEventController:getMonthEvents] month = " + month);
-		System.out.println("[CalendarEventController:getMonthEvents] year = " + year);
+		logger.info("[CalendarEventController:getMonthEventss] Start of the method");
+		logger.info("[CalendarEventController:getMonthEvents] month = " + month);
+		logger.info("[CalendarEventController:getMonthEvents] year = " + year);
 
 		ResponseEntity<?> responseEntity = null;
 
@@ -112,7 +116,7 @@ public class CalendarEventController {
 			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		System.out.println("[CalendarEventController:getMonthEvents] End of the method");
+		logger.info("[CalendarEventController:getMonthEvents] End of the method");
 
 		return responseEntity;
 	}
@@ -129,9 +133,9 @@ public class CalendarEventController {
 			@PathVariable(name = "toDate", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate toDate)
 			throws CalendarEventException {
 
-		System.out.println("[CalendarEventController:getEventsByWeek] Start of the method");
-		System.out.println("[CalendarEventController:getEventsByWeek] fromDate = " + fromDate);
-		System.out.println("[CalendarEventController:getEventsByWeek] toDate = " + toDate);
+		logger.info("[CalendarEventController:getEventsByWeek] Start of the method");
+		logger.info("[CalendarEventController:getEventsByWeek] fromDate = " + fromDate);
+		logger.info("[CalendarEventController:getEventsByWeek] toDate = " + toDate);
 
 		ResponseEntity<?> responseEntity = null;
 
@@ -146,10 +150,11 @@ public class CalendarEventController {
 			}
 		} catch (CalendarEventCreateException e) {
 			String errorMessage = "Error retrieving the events for the month and year, exception " + e;
+			logger.error(errorMessage);
 			responseEntity = new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		System.out.println("[CalendarEventController:getMonthEvents] End of the method");
+		logger.info("[CalendarEventController:getMonthEvents] End of the method");
 
 		return responseEntity;
 	}
@@ -165,6 +170,7 @@ public class CalendarEventController {
 			responseEntity = new ResponseEntity<>("Event " + calendarEventRequest.getTitle() + " succesfuly created",
 					HttpStatus.CREATED);
 		} catch (CalendarEventCreateException e) {
+			logger.error(e.getMessage());
 			responseEntity = new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
@@ -183,13 +189,17 @@ public class CalendarEventController {
 			responseEntity = new ResponseEntity<>("Event " + calendarEventRequest.getTitle() + " succesfuly updated",
 					HttpStatus.OK);
 		} catch (CalendarEventCreateException e) {
+			logger.error(e.getMessage());
 		} catch (CalendarEventNotFoundException e) {
+			logger.error(e.getMessage());
 			responseEntity = new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
 			e.printStackTrace();
 		} catch (CalendarNotFoundException e) {
+			logger.error(e.getMessage());
 			responseEntity = new ResponseEntity<>(e, HttpStatus.NOT_FOUND);
 			e.printStackTrace();
 		} catch (CalendarEventException e) {
+			logger.error(e.getMessage());
 			responseEntity = new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 			e.printStackTrace();
 		}
@@ -206,6 +216,7 @@ public class CalendarEventController {
 			calendarEventService.deleteEvent(eventId);
 			responseEntity = new ResponseEntity<>("Event " + eventId + " succesfuly deleted", HttpStatus.NO_CONTENT);
 		} catch (CalendarEventException e) {
+			logger.error(e.getMessage());
 			responseEntity = new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
 			e.printStackTrace();
 		}
